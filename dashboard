@@ -1,0 +1,30 @@
+<?php
+session_start();
+require 'db.php';
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit();
+}
+$stmt = $pdo->query('SELECT id, username FROM users');
+$users = $stmt->fetchAll();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<h2>Danh sách các user</h2>
+<ul>
+    <?php foreach ($users as $user): ?>
+        <li>
+            <a href="portfolio.php?id=<?php echo $user['id']; ?>">
+                <?php echo htmlspecialchars($user['username']); ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
+<p><a href="edit_portfolio.php">Sửa Portfolio của tôi</a></p>
+<p><a href="logout.php">Đăng xuất</a></p>
+</body>
+</html>
